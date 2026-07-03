@@ -1,0 +1,60 @@
+.panier { padding-top: calc(var(--nav-h) + 38px + 48px); padding-bottom: 96px; }
+.panier__inner { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+.panier__header { margin-bottom: 56px; }
+.panier__header .eyebrow { display: block; margin-bottom: 12px; }
+
+/* Empty */
+.panier__empty { text-align: center; padding: 80px 0; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.panier__empty-icon { color: var(--line); margin-bottom: 8px; }
+.panier__empty h2 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 400; }
+.panier__empty p { color: var(--muted); font-size: 15px; }
+
+/* Layout */
+.panier__layout { display: grid; grid-template-columns: 1fr 380px; gap: 64px; align-items: start; }
+
+/* Items */
+.panier__items { display: flex; flex-direction: column; gap: 0; }
+.panier-item {
+  display: flex; gap: 24px; align-items: flex-start;
+  padding: 28px 0; border-bottom: 1px solid var(--line);
+}
+.panier-item__img { width: 96px; height: 120px; flex-shrink: 0; background: var(--bg-warm); overflow: hidden; }
+.panier-item__img img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.panier-item__img-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--muted); }
+.panier-item__info { flex: 1; }
+.panier-item__name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 400; display: block; margin-bottom: 4px; transition: color 0.2s; }
+.panier-item__name:hover { color: var(--gold); }
+.panier-item__edition { font-size: 10px; color: var(--gold-deep); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+.panier-item__meta { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.panier-item__actions { display: flex; align-items: center; gap: 20px; }
+.panier-item__qty { display: flex; align-items: center; border: 1px solid var(--line); }
+.panier-item__qty button { width: 32px; height: 32px; font-size: 16px; color: var(--ink); transition: background 0.2s; }
+.panier-item__qty button:hover:not(:disabled) { background: var(--bg-warm); }
+.panier-item__qty button:disabled { opacity: 0.3; }
+.panier-item__qty span { width: 40px; text-align: center; font-size: 14px; }
+.panier-item__remove { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: underline; transition: color 0.2s; }
+.panier-item__remove:hover { color: var(--error); }
+.panier-item__price { text-align: right; padding-top: 4px; }
+.panier-item__price span { display: block; }
+.panier-item__price span:first-child { font-family: var(--font-display); font-size: 1.2rem; font-weight: 400; }
+.panier-item__unit { font-size: 11px; color: var(--muted); }
+
+/* Summary */
+.panier__summary { position: sticky; top: calc(var(--nav-h) + 48px); }
+.panier__summary-inner { padding: 32px; background: var(--surface); border: 1px solid var(--line); }
+.panier__summary-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 400; margin-bottom: 24px; }
+.panier__summary-rows { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+.panier__summary-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
+.panier__summary-total { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-top: 1px solid var(--line); margin-bottom: 20px; }
+.panier__summary-total span:first-child { font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; }
+.panier__summary-total span:last-child { font-family: var(--font-display); font-size: 1.4rem; }
+.panier__checkout-btn { width: 100%; background: #25D366; border-color: #25D366; color: #fff; gap: 10px; margin-bottom: 16px; }
+.panier__checkout-btn:hover { background: #1ebe5d; border-color: #1ebe5d; color: #fff; }
+.panier__checkout-note { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.7; }
+
+@media (max-width: 900px) {
+  .panier { padding-top: calc(var(--nav-h) + 24px); }
+  .panier__layout { grid-template-columns: 1fr; gap: 48px; }
+  .panier__summary { position: static; }
+  .panier__inner { padding: 0 20px; }
+}
