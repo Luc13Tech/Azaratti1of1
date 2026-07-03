@@ -62,7 +62,7 @@ export default function Navbar() {
 
           {/* ── CENTRE : logo ── */}
           <Link to="/" className="navbar__logo-wrap">
-            <img src="/images/logo/azaratti-logo.jpg" alt="AzaRatti 1 of 1" className="navbar__logo" />
+            <img src="./images/logo/azaratti-logo.jpg" alt="AzaRatti 1 of 1" className="navbar__logo" />
           </Link>
 
           {/* ── DROITE : actions ── */}
@@ -143,7 +143,7 @@ export default function Navbar() {
       {/* Menu mobile (drawer) */}
       <div className={`nav-mobile ${menuOpen ? "nav-mobile--open" : ""}`}>
         <div className="nav-mobile__header">
-          <img src="/images/logo/azaratti-logo.jpg" alt="AzaRatti" className="nav-mobile__logo" />
+          <img src="./images/logo/azaratti-logo.jpg" alt="AzaRatti" className="nav-mobile__logo" />
           <button className="nav-mobile__close" onClick={() => setMenuOpen(false)}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M18 6 6 18M6 6l12 12"/>
