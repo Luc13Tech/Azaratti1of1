@@ -1,0 +1,316 @@
+/* ============================================
+   AZARATTI 1OF1 — Global Design System
+   ============================================ */
+:root {
+  --bg: #FAFAF7;
+  --bg-warm: #F5F3EE;
+  --ink: #131110;
+  --ink-light: #3A3730;
+  --muted: #7A7870;
+  --line: #E8E4DC;
+  --gold: #A8804E;
+  --gold-deep: #7A5C30;
+  --gold-light: #C9A96E;
+  --surface: #FFFFFF;
+  --error: #B94040;
+  --success: #3A7A5A;
+
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Jost', system-ui, sans-serif;
+
+  --nav-h: 64px;
+  --nav-h-scroll: 54px;
+  --container: 1320px;
+  --radius: 1px;
+  --shadow: 0 2px 24px rgba(19,17,16,0.07);
+  --shadow-lg: 0 8px 48px rgba(19,17,16,0.12);
+
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font-family: var(--font-body); cursor: pointer; border: none; background: none; }
+input, textarea, select { font-family: var(--font-body); }
+:focus-visible { outline: 1.5px solid var(--gold); outline-offset: 3px; }
+
+/* ── Layout ── */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+@media (max-width: 768px) { .container { padding: 0 20px; } }
+
+/* ── Typography helpers ── */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+.display-1 { font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 300; }
+.display-2 { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 300; }
+.section-title { font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 400; }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 36px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  transition: all 0.3s var(--ease);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.btn-dark {
+  background: var(--ink);
+  color: var(--bg);
+  border: 1px solid var(--ink);
+}
+.btn-dark:hover { background: var(--ink-light); }
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+}
+.btn-outline:hover { background: var(--ink); color: var(--bg); }
+.btn-gold {
+  background: var(--gold);
+  color: var(--bg);
+  border: 1px solid var(--gold);
+}
+.btn-gold:hover { background: var(--gold-deep); border-color: var(--gold-deep); }
+.btn-white {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--surface);
+}
+.btn-white:hover { background: var(--bg-warm); }
+.btn[disabled], .btn:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+.btn-sm { padding: 10px 24px; font-size: 10px; }
+.btn-lg { padding: 18px 48px; font-size: 12px; }
+
+/* ── Dividers ── */
+.hairline { border: none; border-top: 1px solid var(--line); }
+.gold-line {
+  width: 48px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto;
+}
+
+/* ── Form elements ── */
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--ink);
+  transition: border-color 0.2s var(--ease);
+}
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+.field textarea { resize: vertical; min-height: 120px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position: 200% 0; }
+}
+
+.fade-up { animation: fadeUp 0.7s var(--ease-out) both; }
+.fade-in { animation: fadeIn 0.5s var(--ease) both; }
+
+/* ── Skeleton loader ── */
+.skeleton {
+  background: linear-gradient(90deg, var(--line) 25%, var(--bg-warm) 50%, var(--line) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+  border-radius: var(--radius);
+}
+
+/* ── Page wrapper ── */
+.page { padding-top: var(--nav-h); min-height: 100vh; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ============================================
+   MOBILE BOTTOM NAV (styles déplacés depuis App.css)
+   ============================================ */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 900;
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--line);
+  padding: 6px 0 env(safe-area-inset-bottom, 6px);
+  box-shadow: 0 -2px 20px rgba(19,17,16,0.07);
+}
+.mobile-bottom-nav .mbn-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px;
+  transition: color 0.2s;
+  text-decoration: none;
+  min-width: 0;
+}
+.mobile-bottom-nav .mbn-item svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.mobile-bottom-nav .mbn-item span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.mobile-bottom-nav .mbn-item--active,
+.mobile-bottom-nav .mbn-item:hover { color: var(--gold-deep); }
+.mobile-bottom-nav .mbn-item--active svg { stroke: var(--gold-deep); }
+
+.mbn-cart-wrap { position: relative; display: inline-flex; }
+.mbn-badge {
+  position: absolute;
+  top: -6px; right: -8px;
+  min-width: 16px; height: 16px;
+  padding: 0 3px;
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 8px;
+  font-size: 9px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.mbn-badge--heart { background: #c0392b; }
+
+@media (max-width: 900px) {
+  .mobile-bottom-nav { display: flex; }
+  /* Espace en bas pour ne pas cacher le contenu */
+  .footer { padding-bottom: 68px; }
+}
+
+/* ============================================
+   APP LOADER
+   ============================================ */
+.app-loader {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+.app-loader__dot {
+  width: 32px; height: 32px;
+  border: 1.5px solid var(--line);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.85s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================
+   NOT FOUND
+   ============================================ */
+.not-found {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  padding: calc(var(--nav-h) + 40px) 24px 80px;
+}
+.not-found h1 {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 300;
+}
