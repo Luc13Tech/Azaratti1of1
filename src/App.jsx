@@ -7,7 +7,7 @@ import CookieBanner from "./components/CookieBanner/CookieBanner.jsx";
 import { useLang } from "./context/LangContext.jsx";
 import { useCart } from "./context/CartContext.jsx";
 import { useLikes } from "./context/LikesContext.jsx";
-import "./App.css";
+// import "./App.css";  ← SUPPRIMÉ
 
 const Home           = lazy(() => import("./pages/Home/Home.jsx"));
 const Boutique       = lazy(() => import("./pages/Boutique/Boutique.jsx"));
