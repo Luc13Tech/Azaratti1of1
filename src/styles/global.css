@@ -314,3 +314,35 @@ input, textarea, select { font-family: var(--font-body); }
   font-size: 2.5rem;
   font-weight: 300;
 }
+
+/* ============================================
+   CORRECTIONS ESPACEMENT MOBILE
+   Padding horizontal suffisant sur tous petits écrans
+   ============================================ */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 18px;
+  }
+}
+
+/* Empêche tout texte de coller au bord */
+.page { overflow-x: hidden; }
+
+/* Confidentialité — texte avec marge */
+.confidentialite__section-text p,
+.confidentialite__section-title {
+  padding-left: 0;
+  /* Le container s'occupe du padding horizontal */
+}
+
+/* Tous les formulaires — espacement interne */
+.field input,
+.field textarea,
+.field select {
+  box-sizing: border-box;
+}
+
+/* Labels : jamais collés */
+.field label {
+  padding-left: 2px;
+}
