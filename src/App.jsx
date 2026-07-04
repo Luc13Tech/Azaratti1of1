@@ -4,19 +4,19 @@ import Navbar from "./components/Navbar/Navbar.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import CartDrawer from "./components/CartDrawer/CartDrawer.jsx";
 import CookieBanner from "./components/CookieBanner/CookieBanner.jsx";
+import ScrollToTop from "./components/ScrollToTop/ScrollToTop.jsx";
 import { useLang } from "./context/LangContext.jsx";
 import { useCart } from "./context/CartContext.jsx";
 import { useLikes } from "./context/LikesContext.jsx";
-// import "./App.css";  ← SUPPRIMÉ
 
-const Home           = lazy(() => import("./pages/Home/Home.jsx"));
-const Boutique       = lazy(() => import("./pages/Boutique/Boutique.jsx"));
-const Produit        = lazy(() => import("./pages/Produit/Produit.jsx"));
-const Panier         = lazy(() => import("./pages/Panier/Panier.jsx"));
-const SurMesure      = lazy(() => import("./pages/SurMesure/SurMesure.jsx"));
-const Compte         = lazy(() => import("./pages/Compte/Compte.jsx"));
-const Maison         = lazy(() => import("./pages/Maison/Maison.jsx"));
-const Contact        = lazy(() => import("./pages/Contact/Contact.jsx"));
+const Home            = lazy(() => import("./pages/Home/Home.jsx"));
+const Boutique        = lazy(() => import("./pages/Boutique/Boutique.jsx"));
+const Produit         = lazy(() => import("./pages/Produit/Produit.jsx"));
+const Panier          = lazy(() => import("./pages/Panier/Panier.jsx"));
+const SurMesure       = lazy(() => import("./pages/SurMesure/SurMesure.jsx"));
+const Compte          = lazy(() => import("./pages/Compte/Compte.jsx"));
+const Maison          = lazy(() => import("./pages/Maison/Maison.jsx"));
+const Contact         = lazy(() => import("./pages/Contact/Contact.jsx"));
 const Confidentialite = lazy(() => import("./pages/Confidentialite/Confidentialite.jsx"));
 
 function Loader() {
@@ -46,8 +46,10 @@ function MobileBottomNav() {
 
       <Link to="/boutique" className={`mbn-item ${path === "/boutique" ? "mbn-item--active" : ""}`}>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-          <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+          <rect x="3" y="3" width="7" height="7"/>
+          <rect x="14" y="3" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/>
         </svg>
         <span>{t("nav.boutique")}</span>
       </Link>
@@ -55,7 +57,8 @@ function MobileBottomNav() {
       <button className="mbn-item" onClick={() => setOpen(true)}>
         <div className="mbn-cart-wrap">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M6 7h12l-1.2 12H7.2L6 7z"/><path d="M9.5 7a2.5 2.5 0 0 1 5 0"/>
+            <path d="M6 7h12l-1.2 12H7.2L6 7z"/>
+            <path d="M9.5 7a2.5 2.5 0 0 1 5 0"/>
           </svg>
           {totalCount > 0 && <span className="mbn-badge">{totalCount}</span>}
         </div>
@@ -65,7 +68,8 @@ function MobileBottomNav() {
       <Link to="/compte" className={`mbn-item ${path.startsWith("/compte") ? "mbn-item--active" : ""}`}>
         <div style={{ position: "relative" }}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill={liked.length > 0 ? "currentColor" : "none"}/>
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+              fill={liked.length > 0 ? "currentColor" : "none"}/>
           </svg>
           {liked.length > 0 && <span className="mbn-badge mbn-badge--heart">{liked.length}</span>}
         </div>
@@ -74,7 +78,8 @@ function MobileBottomNav() {
 
       <Link to="/compte" className={`mbn-item ${path === "/compte" ? "mbn-item--active" : ""}`}>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
         </svg>
         <span>{t("nav.account")}</span>
       </Link>
@@ -85,8 +90,12 @@ function MobileBottomNav() {
 export default function App() {
   return (
     <>
+      {/* ScrollToTop : scroll automatique en haut à chaque changement de page */}
+      <ScrollToTop />
+
       <Navbar />
       <CartDrawer />
+
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/"                element={<Home />} />
@@ -101,6 +110,7 @@ export default function App() {
           <Route path="*"                element={<NotFound />} />
         </Routes>
       </Suspense>
+
       <Footer />
       <MobileBottomNav />
       <CookieBanner />
@@ -109,7 +119,6 @@ export default function App() {
 }
 
 function NotFound() {
-  const { t } = useLang();
   return (
     <div className="not-found">
       <p className="eyebrow">404</p>
@@ -118,5 +127,3 @@ function NotFound() {
     </div>
   );
 }
-
-function useLang2() { return useLang(); }
