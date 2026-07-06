@@ -78,12 +78,12 @@ export default function Footer() {
           <div className="footer__col">
             <p className="footer__col-title">{t("footer.col3")}</p>
             <div className="footer__contact">
-              <a href="mailto:Contact@azaratti.com" className="footer__contact-item">
+              <a href="mailto:webusinessbillion@gmail.com" className="footer__contact-item">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <rect x="2" y="4" width="20" height="16" rx="2"/>
                   <path d="m2 7 10 7 10-7"/>
                 </svg>
-                Contact@azaratti.com
+                webusinessbillion@gmail.com 
               </a>
               <a href="https://wa.me/221779398484" target="_blank" rel="noopener noreferrer" className="footer__contact-item">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -116,8 +116,8 @@ export default function Footer() {
           <p className="footer__copy">
             © {year} AzaRatti 1 of 1. {t("footer.rights")}
           </p>
-          <a href="https://www.azaratti.com" className="footer__website">
-            www.azaratti.com
+          <a href="https://www.azaratti1of1.com" className="footer__website">
+            www.azaratti1of1.com
           </a>
         </div>
       </div>
