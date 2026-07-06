@@ -114,10 +114,13 @@ export default function Contact() {
               </div>
               <div className="contact__card-body">
                 <p className="contact__card-title">Email</p>
-                <a href="mailto:Contact@azaratti.com" className="contact__card-val contact__card-link">
+                <a href="mailto:Contact@azaratti1of1.com" className="contact__card-val contact__card-link">
                   Contact@azaratti.com
                 </a>
-                <a href="https://www.azaratti.com" target="_blank" rel="noopener noreferrer" className="contact__card-val contact__card-link">
+                <a href="mailto:webusinessbillion@gmail.com" className="contact__card-val contact__card-link">
+                  Contact@azaratti.com
+                </a>
+                <a href="https://www.azaratti1of1.com" target="_blank" rel="noopener noreferrer" className="contact__card-val contact__card-link">
                   www.azaratti.com
                 </a>
               </div>
