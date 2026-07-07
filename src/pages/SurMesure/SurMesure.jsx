@@ -4,6 +4,26 @@ import { useLang } from "../../context/LangContext.jsx";
 import { customAPI } from "../../api/api.js";
 import "./SurMesure.css";
 
+// Image avec fallback élégant
+function BagImage({ className }) {
+  const [error, setError] = useState(false);
+  if (error) {
+    return (
+      <div className={`${className} sur-mesure__bag-fallback`}>
+        <span>AzaRatti<br/>1 of 1</span>
+      </div>
+    );
+  }
+  return (
+    <img
+      src="/images/logo/azaratti-bag.jpg"
+      alt="AzaRatti 1 of 1"
+      className={className}
+      onError={() => setError(true)}
+    />
+  );
+}
+
 export default function SurMesure() {
   const { t, lang } = useLang();
   const [searchParams] = useSearchParams();
@@ -38,8 +58,7 @@ export default function SurMesure() {
           <div className="sur-mesure__success">
             <div className="sur-mesure__success-icon">
               <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="m9 12 2 2 4-4"/>
+                <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
               </svg>
             </div>
             <h2>{t("surMesure.successTitle")}</h2>
@@ -55,8 +74,6 @@ export default function SurMesure() {
 
   return (
     <main className="page sur-mesure">
-
-      {/* Header */}
       <div className="sur-mesure__header">
         <div className="container">
           <p className="eyebrow">{t("nav.surMesure")}</p>
@@ -65,9 +82,7 @@ export default function SurMesure() {
         </div>
       </div>
 
-      <div className="container sur-mesure__inner">
-
-        {/* ── Formulaire ── */}
+      <div className="container sur-mesure__body">
         <form className="sur-mesure__form" onSubmit={handleSubmit} noValidate>
 
           {/* Étape 1 */}
@@ -76,40 +91,18 @@ export default function SurMesure() {
             <div className="sur-mesure__fields">
               <div className="field">
                 <label htmlFor="sm-name">{t("surMesure.name")}</label>
-                <input
-                  id="sm-name"
-                  name="name"
-                  value={form.name}
-                  onChange={onChange}
-                  required
-                  placeholder="Jean Dupont"
-                  autoComplete="name"
-                />
+                <input id="sm-name" name="name" value={form.name} onChange={onChange}
+                  required placeholder="Jean Dupont" autoComplete="name" />
               </div>
               <div className="field">
                 <label htmlFor="sm-email">{t("surMesure.email")}</label>
-                <input
-                  id="sm-email"
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={onChange}
-                  required
-                  placeholder="jean@email.com"
-                  autoComplete="email"
-                />
+                <input id="sm-email" type="email" name="email" value={form.email}
+                  onChange={onChange} required placeholder="jean@email.com" autoComplete="email" />
               </div>
               <div className="field">
                 <label htmlFor="sm-phone">{t("surMesure.phone")}</label>
-                <input
-                  id="sm-phone"
-                  type="tel"
-                  name="phone"
-                  value={form.phone}
-                  onChange={onChange}
-                  placeholder="+221 77 000 00 00"
-                  autoComplete="tel"
-                />
+                <input id="sm-phone" type="tel" name="phone" value={form.phone}
+                  onChange={onChange} placeholder="+221 77 000 00 00" autoComplete="tel" />
               </div>
             </div>
           </div>
@@ -120,43 +113,24 @@ export default function SurMesure() {
             <div className="sur-mesure__fields">
               <div className="field">
                 <label htmlFor="sm-size">{t("surMesure.size")}</label>
-                <input
-                  id="sm-size"
-                  name="size"
-                  value={form.size}
-                  onChange={onChange}
-                  placeholder="M / Tour de poitrine 98cm..."
-                />
+                <input id="sm-size" name="size" value={form.size} onChange={onChange}
+                  placeholder="M / Tour de poitrine 98cm..." />
               </div>
               <div className="field">
                 <label htmlFor="sm-color">{t("surMesure.color")}</label>
-                <input
-                  id="sm-color"
-                  name="color"
-                  value={form.color}
-                  onChange={onChange}
-                  placeholder="Noir profond, Bordeaux, Or antique..."
-                />
+                <input id="sm-color" name="color" value={form.color} onChange={onChange}
+                  placeholder="Noir profond, Bordeaux, Or antique..." />
               </div>
               <div className="field">
                 <label htmlFor="sm-fabric">{t("surMesure.fabric")}</label>
-                <input
-                  id="sm-fabric"
-                  name="fabric"
-                  value={form.fabric}
-                  onChange={onChange}
-                  placeholder="Laine vierge, Tweed, Velours..."
-                />
+                <input id="sm-fabric" name="fabric" value={form.fabric} onChange={onChange}
+                  placeholder="Laine vierge, Tweed, Velours..." />
               </div>
               {ref && (
                 <div className="field">
                   <label>{t("surMesure.reference")}</label>
-                  <input
-                    name="relatedProductId"
-                    value={form.relatedProductId}
-                    readOnly
-                    style={{ opacity: 0.6, cursor: "default" }}
-                  />
+                  <input name="relatedProductId" value={form.relatedProductId}
+                    readOnly style={{ opacity: 0.6, cursor: "default" }} />
                 </div>
               )}
             </div>
@@ -167,15 +141,9 @@ export default function SurMesure() {
             <p className="sur-mesure__step-title">03 — {t("surMesure.step3")}</p>
             <div className="field">
               <label htmlFor="sm-instructions">{t("surMesure.instructions")}</label>
-              <textarea
-                id="sm-instructions"
-                name="instructions"
-                value={form.instructions}
-                onChange={onChange}
-                required
-                rows={6}
-                placeholder={t("surMesure.instructionsPlaceholder")}
-              />
+              <textarea id="sm-instructions" name="instructions" value={form.instructions}
+                onChange={onChange} required rows={6}
+                placeholder={t("surMesure.instructionsPlaceholder")} />
             </div>
           </div>
 
@@ -185,24 +153,17 @@ export default function SurMesure() {
 
           <div className="sur-mesure__submit-wrap">
             <span className="sur-mesure__required">{t("surMesure.required")}</span>
-            <button
-              type="submit"
-              className="btn btn-dark sur-mesure__submit"
-              disabled={status === "loading"}
-            >
+            <button type="submit" className="btn btn-dark sur-mesure__submit"
+              disabled={status === "loading"}>
               {status === "loading" ? t("surMesure.sending") : t("surMesure.submit")}
             </button>
           </div>
         </form>
 
-        {/* ── Aside ── */}
+        {/* Aside */}
         <aside className="sur-mesure__aside">
           <div className="sur-mesure__aside-card">
-            <img
-              src="/images/logo/azaratti-bag.jpg"
-              alt="AzaRatti 1 of 1"
-              className="sur-mesure__aside-bag"
-            />
+            <BagImage className="sur-mesure__aside-bag" />
             <div className="gold-line" style={{ marginLeft: 0, margin: "20px 0" }} />
             <p className="eyebrow" style={{ marginBottom: 12 }}>AzaRatti 1 of 1</p>
             <p className="sur-mesure__aside-text">
@@ -211,8 +172,7 @@ export default function SurMesure() {
             <div className="sur-mesure__contact-info">
               <a href="mailto:Contact@azaratti.com" className="sur-mesure__contact-link">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <rect x="2" y="4" width="20" height="16" rx="2"/>
-                  <path d="m2 7 10 7 10-7"/>
+                  <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/>
                 </svg>
                 Contact@azaratti.com
               </a>
@@ -225,7 +185,6 @@ export default function SurMesure() {
             </div>
           </div>
         </aside>
-
       </div>
     </main>
   );

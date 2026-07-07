@@ -1,7 +1,7 @@
-/* Header */
 .sur-mesure__header {
   background: var(--bg-warm);
-  padding: 56px 0 44px;
+  padding-top: 56px;
+  padding-bottom: 44px;
   border-bottom: 1px solid var(--line);
   margin-top: var(--nav-h);
 }
@@ -10,17 +10,15 @@
   font-size: 15px; color: var(--muted);
   margin-top: 14px; max-width: 480px; line-height: 1.75;
 }
-
-/* Layout */
 .sur-mesure__inner {
   display: grid;
   grid-template-columns: 1fr 280px;
   gap: 56px;
-  padding: 56px 0 96px;
+  /* NE PAS mettre padding: X 0 X — ça écrase le padding du container ! */
+  padding-top: 52px;
+  padding-bottom: 96px;
   align-items: start;
 }
-
-/* Form */
 .sur-mesure__form { display: flex; flex-direction: column; gap: 40px; }
 .sur-mesure__section { display: flex; flex-direction: column; gap: 20px; }
 .sur-mesure__step-title {
@@ -32,58 +30,29 @@
 .sur-mesure__fields {
   display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
 }
-
-/* Field styles */
-.sur-mesure__form .field { display: flex; flex-direction: column; gap: 8px; }
-.sur-mesure__form .field label {
-  font-size: 10px; font-weight: 500;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--muted);
-}
-.sur-mesure__form .field input,
-.sur-mesure__form .field textarea {
-  width: 100%;
-  padding: 13px 14px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  font-family: var(--font-body);
-  font-size: 14px; font-weight: 300; color: var(--ink);
-  transition: border-color 0.2s;
-  -webkit-appearance: none;
-  box-sizing: border-box;
-}
-.sur-mesure__form .field input:focus,
-.sur-mesure__form .field textarea:focus { outline: none; border-color: var(--gold); }
-.sur-mesure__form .field textarea { resize: vertical; min-height: 130px; }
-
 .sur-mesure__error {
   padding: 12px 16px;
   background: rgba(185,64,64,0.07);
   border-left: 3px solid var(--error);
   font-size: 13px; color: var(--error);
 }
-
-/* Submit */
 .sur-mesure__submit-wrap {
   display: flex; align-items: center;
-  justify-content: space-between;
-  gap: 16px; flex-wrap: wrap;
+  justify-content: space-between; gap: 16px; flex-wrap: wrap;
 }
 .sur-mesure__required { font-size: 11px; color: var(--muted); }
 .sur-mesure__submit { min-width: 200px; }
 
-/* Success */
 .sur-mesure__success {
-  text-align: center; padding: 80px 24px;
+  text-align: center;
+  padding-top: 80px; padding-bottom: 80px;
   display: flex; flex-direction: column;
-  align-items: center; gap: 16px;
-  min-height: 60vh;
+  align-items: center; gap: 16px; min-height: 60vh;
 }
 .sur-mesure__success-icon { color: var(--success); }
 .sur-mesure__success h2 { font-family: var(--font-display); font-size: 1.9rem; font-weight: 400; }
 .sur-mesure__success p { color: var(--muted); font-size: 14px; max-width: 440px; line-height: 1.75; }
 
-/* Aside */
 .sur-mesure__aside { position: sticky; top: calc(var(--nav-h) + 24px); }
 .sur-mesure__aside-card { padding: 24px; border: 1px solid var(--line); background: var(--surface); }
 .sur-mesure__aside-bag { width: 100%; border-radius: 2px; margin-bottom: 18px; }
@@ -95,21 +64,42 @@
 }
 .sur-mesure__contact-link:hover { color: var(--gold); }
 
-/* Responsive */
 @media (max-width: 900px) {
-  .sur-mesure__inner {
-    grid-template-columns: 1fr;
-    gap: 32px; padding: 40px 0 80px;
-  }
+  .sur-mesure__inner { grid-template-columns: 1fr; gap: 32px; padding-top: 36px; }
   .sur-mesure__aside { position: static; order: -1; }
   .sur-mesure__aside-card { display: flex; gap: 16px; align-items: flex-start; }
   .sur-mesure__aside-bag { width: 90px; flex-shrink: 0; margin-bottom: 0; }
 }
 @media (max-width: 600px) {
   .sur-mesure__fields { grid-template-columns: 1fr; }
-  .sur-mesure__header { padding: 40px 0 28px; }
+  .sur-mesure__header { padding-top: 36px; padding-bottom: 28px; }
   .sur-mesure__submit-wrap { flex-direction: column; align-items: stretch; }
   .sur-mesure__submit { width: 100%; min-width: unset; }
   .sur-mesure__aside-card { flex-direction: column; }
   .sur-mesure__aside-bag { width: 100%; }
+}
+
+/* Fallback image sac */
+.sur-mesure__bag-fallback {
+  width: 100%; aspect-ratio: 4/3;
+  background: linear-gradient(135deg, var(--bg-warm), var(--line));
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line); margin-bottom: 18px;
+}
+.sur-mesure__bag-fallback span {
+  font-family: var(--font-display);
+  font-size: 1rem; font-weight: 400;
+  text-align: center; color: var(--gold-deep); line-height: 1.4;
+}
+/* Renomme inner en body dans le CSS */
+.sur-mesure__body {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 56px;
+  padding-top: 52px;
+  padding-bottom: 96px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .sur-mesure__body { grid-template-columns: 1fr; gap: 32px; padding-top: 36px; }
 }
