@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useLang } from "../../context/LangContext.jsx";
 import { productsAPI } from "../../api/api.js";
+import { products as staticProducts } from "../../data/siteData.js";
 import ProductCard from "../../components/ProductCard/ProductCard.jsx";
 import "./Boutique.css";
 
@@ -16,17 +17,37 @@ export default function Boutique() {
 
   useEffect(() => {
     setLoading(true);
-    const params = {};
-    if (activeCategory !== "all") params.category = activeCategory;
-    if (q) params.q = q;
-    productsAPI.list(params)
+
+    const applyFiltersAndSort = (list) => {
+      let result = [...list];
+      if (activeCategory !== "all") {
+        result = result.filter(p => p.category === activeCategory);
+      }
+      if (q) {
+        const qLow = q.toLowerCase();
+        result = result.filter(p => {
+          const name = p.name?.fr || p.name?.en || "";
+          return name.toLowerCase().includes(qLow);
+        });
+      }
+      if (sort === "asc") result.sort((a,b) => a.priceUSD - b.priceUSD);
+      if (sort === "desc") result.sort((a,b) => b.priceUSD - a.priceUSD);
+      return result;
+    };
+
+    productsAPI.list({ category: activeCategory !== "all" ? activeCategory : undefined, q: q || undefined })
       .then(({ data }) => {
-        let list = data.products || [];
-        if (sort === "asc") list = [...list].sort((a, b) => a.priceUSD - b.priceUSD);
-        if (sort === "desc") list = [...list].sort((a, b) => b.priceUSD - a.priceUSD);
-        setProducts(list);
+        const apiList = data.products || [];
+        if (apiList.length > 0) {
+          setProducts(applyFiltersAndSort(apiList));
+        } else {
+          // Fallback données statiques
+          setProducts(applyFiltersAndSort(staticProducts));
+        }
       })
-      .catch(() => setProducts([]))
+      .catch(() => {
+        setProducts(applyFiltersAndSort(staticProducts));
+      })
       .finally(() => setLoading(false));
   }, [activeCategory, q, sort]);
 
@@ -35,16 +56,18 @@ export default function Boutique() {
   return (
     <main className="page boutique">
       <div className="boutique__header">
-        <div className="container boutique__header-inner">
+        <div className="container">
           <p className="eyebrow">{t("boutique.title")}</p>
-          <h1 className="display-2">{t("boutique.sub")}</h1>
+          <h1 className="section-title">{t("boutique.sub")}</h1>
         </div>
       </div>
+
       <div className="container boutique__body">
         <div className="boutique__toolbar">
           <div className="boutique__cats">
             {cats.map(c => (
-              <button key={c} className={`boutique__cat-btn ${activeCategory===c?"boutique__cat-btn--active":""}`}
+              <button key={c}
+                className={`boutique__cat-btn ${activeCategory===c?"boutique__cat-btn--active":""}`}
                 onClick={() => { setActiveCategory(c); if(q) setSearchParams({}); }}>
                 {t(`boutique.${c}`)}
               </button>
@@ -56,29 +79,31 @@ export default function Boutique() {
             <option value="desc">{t("boutique.sortPriceDesc")}</option>
           </select>
         </div>
+
         {q && (
           <p className="boutique__search-info">
             Résultats : <strong>"{q}"</strong> — {products.length} pièce(s)
             <button onClick={() => setSearchParams({})} className="boutique__clear-search">✕</button>
           </p>
         )}
+
         {loading ? (
           <div className="boutique__grid">
             {Array.from({length:8}).map((_,i)=>(
               <div key={i}>
-                <div className="skeleton" style={{aspectRatio:"3/4"}}/>
-                <div className="skeleton" style={{height:18,margin:"14px 0 8px"}}/>
-                <div className="skeleton" style={{height:14,width:"50%"}}/>
+                <div className="skeleton boutique__skeleton-img" />
+                <div className="skeleton boutique__skeleton-title" />
+                <div className="skeleton boutique__skeleton-price" />
               </div>
             ))}
           </div>
         ) : products.length === 0 ? (
-          <div className="boutique__empty">
-            <p>{t("boutique.noResults")}</p>
-          </div>
+          <div className="boutique__empty"><p>{t("boutique.noResults")}</p></div>
         ) : (
           <div className="boutique__grid">
-            {products.map(p => <ProductCard key={p.productId} product={p} />)}
+            {products.map(p => (
+              <ProductCard key={p.productId || p.id} product={p} />
+            ))}
           </div>
         )}
       </div>
