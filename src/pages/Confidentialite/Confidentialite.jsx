@@ -40,7 +40,7 @@ export default function Confidentialite() {
     },
     {
       id: "contact-dpo", title: "9. Contact & Réclamation",
-      text: `Pour toute question relative à la protection de vos données :\n\n📧 **Email** : Contact@azaratti.com\n🌐 **Site** : www.azaratti.com\n📍 **Adresse** : Dakar, Sénégal, Afrique de l'Ouest\n\nSi vous estimez que vos droits n'ont pas été respectés, vous avez le droit d'introduire une réclamation auprès de l'autorité de protection des données de votre pays.`
+      text: `Pour toute question relative à la protection de vos données :\n\n📧 **Email** : Contact@azaratti1of1.com\n🌐 **Site** : www.azaratti1of1.com\n📍 **Adresse** : Dakar, Sénégal, Afrique de l'Ouest\n\nSi vous estimez que vos droits n'ont pas été respectés, vous avez le droit d'introduire une réclamation auprès de l'autorité de protection des données de votre pays.`
     },
     {
       id: "terms", title: "10. Conditions d'utilisation",
