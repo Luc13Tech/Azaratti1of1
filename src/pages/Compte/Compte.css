@@ -3,30 +3,19 @@
   padding-bottom: 96px;
   min-height: 100vh;
 }
-.compte__inner {
-  max-width: 1100px; margin: 0 auto; padding: 0 32px;
-}
-
-/* Connected state */
-.compte__welcome { margin-bottom: 56px; }
+.compte__welcome { margin-bottom: 52px; }
 .compte__welcome .eyebrow { display: block; margin-bottom: 12px; }
 .compte__email { font-size: 15px; color: var(--muted); margin: 8px 0 24px; }
 
-.compte__section { margin-bottom: 52px; }
+.compte__section { margin-bottom: 48px; }
 .compte__section-title {
-  font-family: var(--font-display);
-  font-size: 1.5rem; font-weight: 400;
-  margin-bottom: 24px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--line);
+  font-family: var(--font-display); font-size: 1.5rem; font-weight: 400;
+  margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--line);
 }
 .compte__empty { color: var(--muted); font-size: 14px; }
 .compte__orders { display: flex; flex-direction: column; gap: 14px; }
 .compte__order { padding: 18px; border: 1px solid var(--line); }
-.compte__order-header {
-  display: flex; gap: 16px; align-items: center;
-  margin-bottom: 10px; font-size: 13px; flex-wrap: wrap;
-}
+.compte__order-header { display: flex; gap: 16px; align-items: center; margin-bottom: 10px; font-size: 13px; flex-wrap: wrap; }
 .compte__order-date { color: var(--muted); }
 .compte__order-total { font-weight: 500; }
 .compte__order-status {
@@ -36,58 +25,34 @@
 .compte__order-items { display: flex; flex-direction: column; gap: 4px; }
 .compte__order-item { font-size: 13px; color: var(--muted); }
 
-/* Auth form */
-.compte__auth-wrap { max-width: 460px; margin: 0 auto; }
-.compte__auth-header { text-align: center; margin-bottom: 36px; }
-.compte__auth-logo { height: 52px; margin: 0 auto 18px; }
+.compte__auth-wrap { max-width: 440px; margin: 0 auto; }
+.compte__auth-header { text-align: center; margin-bottom: 32px; }
+.compte__auth-logo { height: 52px; margin: 0 auto 16px; }
 .compte__auth-title { font-family: var(--font-display); font-size: 1.9rem; font-weight: 400; }
 
-.compte__tabs { display: flex; border: 1px solid var(--line); margin-bottom: 32px; }
+.compte__tabs { display: flex; border: 1px solid var(--line); margin-bottom: 28px; }
 .compte__tab {
   flex: 1; padding: 13px;
-  font-size: 11px; font-weight: 500;
-  letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--muted); transition: all 0.2s;
-  border-right: 1px solid var(--line);
+  font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--muted); transition: all 0.2s; border-right: 1px solid var(--line);
 }
 .compte__tab:last-child { border-right: none; }
 .compte__tab.active { background: var(--ink); color: var(--bg); }
 .compte__tab:hover:not(.active) { background: var(--bg-warm); color: var(--ink); }
 
-.compte__form { display: flex; flex-direction: column; gap: 18px; margin-bottom: 22px; }
-.compte__form .field label {
-  font-size: 10px; font-weight: 500;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 8px; display: block;
-}
-.compte__form .field input {
-  width: 100%;
-  padding: 13px 14px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  font-family: var(--font-body);
-  font-size: 14px; font-weight: 300; color: var(--ink);
-  transition: border-color 0.2s;
-  -webkit-appearance: none;
-}
-.compte__form .field input:focus { outline: none; border-color: var(--gold); }
-.compte__hint { font-size: 11px; color: var(--muted); margin-top: 5px; }
-
+.compte__form { display: flex; flex-direction: column; gap: 18px; margin-bottom: 20px; }
+.compte__hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
 .compte__error {
-  padding: 12px 16px;
-  background: rgba(185,64,64,0.07);
-  border-left: 3px solid var(--error);
-  font-size: 13px; color: var(--error);
+  padding: 12px 16px; background: rgba(185,64,64,0.07);
+  border-left: 3px solid var(--error); font-size: 13px; color: var(--error);
 }
 .compte__submit { width: 100%; }
 .compte__switch {
-  width: 100%; text-align: center;
-  font-size: 12px; color: var(--muted);
-  text-decoration: underline; transition: color 0.2s;
+  width: 100%; text-align: center; font-size: 12px;
+  color: var(--muted); text-decoration: underline; transition: color 0.2s;
 }
 .compte__switch:hover { color: var(--gold); }
 
 @media (max-width: 768px) {
-  .compte { padding-top: calc(var(--nav-h) + 32px); }
-  .compte__inner { padding: 0 20px; }
+  .compte { padding-top: calc(var(--nav-h) + 28px); }
 }
