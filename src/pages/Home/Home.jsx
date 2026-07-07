@@ -2,9 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLang } from "../../context/LangContext.jsx";
 import { productsAPI } from "../../api/api.js";
+import { products as staticProducts } from "../../data/siteData.js";
 import HeroSlider from "../../components/HeroSlider/HeroSlider.jsx";
 import ProductCard from "../../components/ProductCard/ProductCard.jsx";
 import "./Home.css";
+
+function normalizeStatic(p) {
+  return { ...p, productId: p.id };
+}
 
 export default function Home() {
   const { t } = useLang();
@@ -13,18 +18,20 @@ export default function Home() {
 
   useEffect(() => {
     productsAPI.list()
-      .then(({ data }) => setProducts(data.products?.slice(0, 4) || []))
-      .catch(() => {})
+      .then(({ data }) => {
+        const list = data.products || [];
+        setProducts(list.length > 0 ? list.slice(0, 4) : staticProducts.slice(0, 4).map(normalizeStatic));
+      })
+      .catch(() => {
+        setProducts(staticProducts.slice(0, 4).map(normalizeStatic));
+      })
       .finally(() => setLoading(false));
   }, []);
 
   return (
     <main className="home">
-
-      {/* ── HERO SLIDER ── */}
       <HeroSlider />
 
-      {/* ── COLLECTION PREVIEW ── */}
       <section className="home__collection">
         <div className="container">
           <div className="home__section-head">
@@ -32,11 +39,10 @@ export default function Home() {
             <h2 className="section-title">{t("home.collectionSub")}</h2>
             <div className="gold-line" />
           </div>
-
           {loading ? (
             <div className="home__grid">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="home__skeleton">
+              {Array.from({length:4}).map((_,i)=>(
+                <div key={i}>
                   <div className="skeleton home__skeleton-img" />
                   <div className="skeleton home__skeleton-title" />
                   <div className="skeleton home__skeleton-price" />
@@ -45,21 +51,17 @@ export default function Home() {
             </div>
           ) : (
             <div className="home__grid">
-              {products.map(p => <ProductCard key={p.productId} product={p} />)}
+              {products.map(p => <ProductCard key={p.productId||p.id} product={p} />)}
             </div>
           )}
-
           <div className="home__collection-cta">
-            <Link to="/boutique" className="btn btn-outline">
-              {t("home.ctaCollection")}
-            </Link>
+            <Link to="/boutique" className="btn btn-outline">{t("home.ctaCollection")}</Link>
           </div>
         </div>
       </section>
 
       <hr className="hairline" />
 
-      {/* ── WHY AZARATTI ── */}
       <section className="home__why">
         <div className="container">
           <div className="home__section-head">
@@ -68,10 +70,10 @@ export default function Home() {
           </div>
           <div className="home__why-grid">
             {[
-              { num: "01", title: t("home.why1Title"), text: t("home.why1Text") },
-              { num: "02", title: t("home.why2Title"), text: t("home.why2Text") },
-              { num: "03", title: t("home.why3Title"), text: t("home.why3Text") },
-            ].map((item, i) => (
+              { num:"01", title:t("home.why1Title"), text:t("home.why1Text") },
+              { num:"02", title:t("home.why2Title"), text:t("home.why2Text") },
+              { num:"03", title:t("home.why3Title"), text:t("home.why3Text") },
+            ].map((item,i) => (
               <div key={i} className="home__why-card">
                 <span className="home__why-num">{item.num}</span>
                 <h3 className="home__why-title">{item.title}</h3>
@@ -82,40 +84,27 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── BAG BANNER ── */}
       <section className="home__bag-banner">
         <div className="container home__bag-inner">
           <div className="home__bag-img">
             <img src="/images/logo/azaratti-bag.jpg" alt="AzaRatti 1 of 1" />
           </div>
           <div className="home__bag-text">
-            <p className="eyebrow" style={{ color: "var(--gold-light)", display: "block", marginBottom: 16 }}>
-              AzaRatti 1 of 1
-            </p>
-            <h2 className="home__bag-title">
-              Une marque.<br />
-              Une pièce.<br />
-              Une histoire.
-            </h2>
-            <Link to="/maison" className="btn btn-gold">
-              Découvrir la Maison
-            </Link>
+            <p className="eyebrow" style={{color:"var(--gold-light)",display:"block",marginBottom:14}}>AzaRatti 1 of 1</p>
+            <h2 className="home__bag-title">Une marque.<br/>Une pièce.<br/>Une histoire.</h2>
+            <Link to="/maison" className="btn btn-gold">Découvrir la Maison</Link>
           </div>
         </div>
       </section>
 
-      {/* ── BESPOKE CTA ── */}
       <section className="home__bespoke">
         <div className="container home__bespoke-inner">
           <p className="eyebrow">{t("nav.surMesure")}</p>
           <h2 className="section-title">{t("home.ctaBespoke")}</h2>
           <p className="home__bespoke-text">{t("home.why3Text")}</p>
-          <Link to="/sur-mesure" className="btn btn-dark btn-lg">
-            {t("home.ctaBespoke")}
-          </Link>
+          <Link to="/sur-mesure" className="btn btn-dark btn-lg">{t("home.ctaBespoke")}</Link>
         </div>
       </section>
-
     </main>
   );
 }
