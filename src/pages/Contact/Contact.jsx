@@ -4,6 +4,21 @@ import { contactAPI } from "../../api/api.js";
 import { openWhatsApp } from "../../utils/whatsapp.js";
 import "./Contact.css";
 
+function BagImage({ className }) {
+  const [error, setError] = useState(false);
+  if (error) {
+    return (
+      <div className={`${className} contact__bag-fallback`}>
+        <span>AzaRatti<br/>1 of 1</span>
+      </div>
+    );
+  }
+  return (
+    <img src="/images/logo/azaratti-bag.jpg" alt="AzaRatti"
+      className={className} onError={() => setError(true)} />
+  );
+}
+
 export default function Contact() {
   const { t } = useLang();
   const [form, setForm] = useState({ name:"", email:"", subject:"", message:"" });
@@ -14,15 +29,12 @@ export default function Contact() {
   async function handleSubmit(e) {
     e.preventDefault();
     setStatus("loading");
-    try {
-      await contactAPI.send(form);
-      setStatus("success");
-    } catch { setStatus("error"); }
+    try { await contactAPI.send(form); setStatus("success"); }
+    catch { setStatus("error"); }
   }
 
   return (
     <main className="page contact">
-
       <div className="contact__header">
         <div className="container">
           <p className="eyebrow">{t("nav.contact")}</p>
@@ -31,16 +43,14 @@ export default function Contact() {
         </div>
       </div>
 
-      <div className="container contact__inner">
-
-        {/* ── Formulaire ── */}
+      <div className="container contact__body">
+        {/* Formulaire */}
         <div className="contact__form-wrap">
           {status === "success" ? (
             <div className="contact__success">
               <div className="contact__success-icon">
                 <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="m9 12 2 2 4-4"/>
+                  <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
                 </svg>
               </div>
               <h2>{t("contact.successTitle")}</h2>
@@ -53,38 +63,41 @@ export default function Contact() {
             <form onSubmit={handleSubmit} className="contact__form">
               <div className="contact__form-row">
                 <div className="field">
-                  <label>{t("contact.name")}</label>
-                  <input name="name" value={form.name} onChange={onChange} required placeholder="Votre nom complet" />
+                  <label htmlFor="c-name">{t("contact.name")}</label>
+                  <input id="c-name" name="name" value={form.name} onChange={onChange}
+                    required placeholder="Votre nom complet" />
                 </div>
                 <div className="field">
-                  <label>{t("contact.email")}</label>
-                  <input type="email" name="email" value={form.email} onChange={onChange} required placeholder="votre@email.com" />
+                  <label htmlFor="c-email">{t("contact.email")}</label>
+                  <input id="c-email" type="email" name="email" value={form.email}
+                    onChange={onChange} required placeholder="votre@email.com" />
                 </div>
               </div>
               <div className="field">
-                <label>{t("contact.subject")}</label>
-                <input name="subject" value={form.subject} onChange={onChange} placeholder="Objet de votre message" />
+                <label htmlFor="c-subject">{t("contact.subject")}</label>
+                <input id="c-subject" name="subject" value={form.subject}
+                  onChange={onChange} placeholder="Objet de votre message" />
               </div>
               <div className="field">
-                <label>{t("contact.message")}</label>
-                <textarea name="message" value={form.message} onChange={onChange} required rows={6} placeholder="Votre message..." />
+                <label htmlFor="c-message">{t("contact.message")}</label>
+                <textarea id="c-message" name="message" value={form.message}
+                  onChange={onChange} required rows={6} placeholder="Votre message..." />
               </div>
               {status === "error" && (
                 <p className="contact__error">{t("contact.error")}</p>
               )}
-              <button type="submit" className="btn btn-dark" disabled={status === "loading"}>
+              <button type="submit" className="btn btn-dark contact__submit-btn"
+                disabled={status === "loading"}>
                 {status === "loading" ? t("contact.sending") : t("contact.send")}
               </button>
             </form>
           )}
         </div>
 
-        {/* ── Informations ── */}
-        <div className="contact__info">
-          <img src="/images/logo/azaratti-bag.jpg" alt="AzaRatti" className="contact__bag" />
-
+        {/* Informations */}
+        <aside className="contact__info">
+          <BagImage className="contact__bag" />
           <div className="contact__cards">
-            {/* WhatsApp */}
             <div className="contact__card">
               <div className="contact__card-icon contact__card-icon--wa">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
@@ -95,16 +108,13 @@ export default function Contact() {
                 <p className="contact__card-title">WhatsApp</p>
                 <p className="contact__card-val">+221 779 398 484</p>
                 <p className="contact__card-val">+221 770 720 202</p>
-                <button
-                  className="btn btn-outline btn-sm contact__wa-btn"
-                  onClick={() => openWhatsApp("Bonjour AzaRatti, j'aimerais en savoir plus.")}
-                >
+                <button className="btn btn-outline btn-sm contact__wa-btn"
+                  onClick={() => openWhatsApp("Bonjour AzaRatti, j'aimerais en savoir plus.")}>
                   {t("contact.whatsappBtn")}
                 </button>
               </div>
             </div>
 
-            {/* Email */}
             <div className="contact__card">
               <div className="contact__card-icon contact__card-icon--email">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
@@ -114,19 +124,16 @@ export default function Contact() {
               </div>
               <div className="contact__card-body">
                 <p className="contact__card-title">Email</p>
-                <a href="mailto:Contact@azaratti1of1.com" className="contact__card-val contact__card-link">
-                  Contact@azaratti1of1.com
+                <a href="mailto:Contact@azaratti.com" className="contact__card-val contact__card-link">
+                  Contact@azaratti.com
                 </a>
-                <a href="mailto:webusinessbillion@gmail.com" className="contact__card-val contact__card-link">
-                  webusinessbillion@gmail.com 
-                </a>
-                <a href="https://www.azaratti1of1.com" target="_blank" rel="noopener noreferrer" className="contact__card-val contact__card-link">
-                  www.azaratti1of1.com
+                <a href="https://www.azaratti.com" target="_blank" rel="noopener noreferrer"
+                  className="contact__card-val contact__card-link">
+                  www.azaratti.com
                 </a>
               </div>
             </div>
 
-            {/* Localisation */}
             <div className="contact__card">
               <div className="contact__card-icon contact__card-icon--loc">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
@@ -141,8 +148,7 @@ export default function Contact() {
               </div>
             </div>
           </div>
-        </div>
-
+        </aside>
       </div>
     </main>
   );
