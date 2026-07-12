@@ -15,7 +15,16 @@ export default function ProductCard({ product }) {
   // Compatible données API (productId) et statiques (id)
   const pid  = product.productId || product.id || "";
   const name = tF ? tF(product.name) : (product.name?.fr || "");
-  const img  = product.images?.[0] || "";
+  
+  // ✅ CORRECTION : Vérifie plusieurs sources pour l'image
+  const img = product.images?.[0] || 
+              product.image || 
+              (product.productId ? `/images/produits/main-${product.productId.split('-')[1] || product.productId}.jpg` : 
+              (product.id ? `/images/produits/main-${product.id}.jpg` : ""));
+  
+  // ✅ AJOUT : Log pour déboguer
+  console.log(`ProductCard ${pid}:`, { img, images: product.images, product });
+  
   const liked = isLiked(pid);
 
   function handleAddToCart(e) {
@@ -42,7 +51,10 @@ export default function ProductCard({ product }) {
             src={img}
             alt={name}
             className="product-card__img"
-            onError={() => setImgError(true)}
+            onError={(e) => {
+              console.error(`Erreur de chargement pour ${pid}:`, img);
+              setImgError(true);
+            }}
             loading="lazy"
           />
         ) : (
@@ -55,8 +67,10 @@ export default function ProductCard({ product }) {
           </div>
         )}
 
-        {/* Badge édition */}
-        <span className="product-card__edition">{product.edition}</span>
+        {/* Badge édition - ✅ CORRECTION : Cache si pas d'édition */}
+        {product.edition && (
+          <span className="product-card__edition">{product.edition}</span>
+        )}
 
         {/* Bouton like */}
         <button
@@ -101,4 +115,4 @@ export default function ProductCard({ product }) {
       </div>
     </Link>
   );
-}
+          }
