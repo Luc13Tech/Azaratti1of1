@@ -18,6 +18,29 @@ export default function Boutique() {
   useEffect(() => {
     setLoading(true);
 
+    // ✅ CORRECTION : Fonction pour normaliser les produits (s'assurer que les images sont correctes)
+    const normalizeProducts = (list) => {
+      return list.map(p => {
+        // ✅ S'assurer que les images existent
+        let images = p.images || [];
+        
+        // ✅ Si pas d'images, construire le chemin à partir de l'ID
+        if (!images || images.length === 0) {
+          const productId = p.productId || p.id || '';
+          const num = productId.split('-')[1] || productId;
+          images = [`/images/produits/main-${num}.jpg`];
+        }
+        
+        // ✅ Retourner le produit avec les images corrigées
+        return {
+          ...p,
+          images: images,
+          // ✅ S'assurer que productId existe
+          productId: p.productId || p.id || `product-${p.id || ''}`
+        };
+      });
+    };
+
     const applyFiltersAndSort = (list) => {
       let result = [...list];
       if (activeCategory !== "all") {
@@ -35,18 +58,31 @@ export default function Boutique() {
       return result;
     };
 
+    // ✅ AJOUT : Log pour déboguer
+    console.log("[Boutique] Récupération des produits...");
+    
     productsAPI.list({ category: activeCategory !== "all" ? activeCategory : undefined, q: q || undefined })
       .then(({ data }) => {
+        console.log("[Boutique] Données reçues de l'API:", data);
         const apiList = data.products || [];
+        
         if (apiList.length > 0) {
-          setProducts(applyFiltersAndSort(apiList));
+          // ✅ Normaliser les données de l'API
+          const normalized = normalizeProducts(apiList);
+          console.log("[Boutique] Produits normalisés:", normalized);
+          setProducts(applyFiltersAndSort(normalized));
         } else {
           // Fallback données statiques
-          setProducts(applyFiltersAndSort(staticProducts));
+          console.log("[Boutique] Utilisation des données statiques");
+          const normalized = normalizeProducts(staticProducts);
+          setProducts(applyFiltersAndSort(normalized));
         }
       })
-      .catch(() => {
-        setProducts(applyFiltersAndSort(staticProducts));
+      .catch((err) => {
+        console.error("[Boutique] Erreur API, utilisation des données statiques:", err);
+        // ✅ Normaliser les données statiques
+        const normalized = normalizeProducts(staticProducts);
+        setProducts(applyFiltersAndSort(normalized));
       })
       .finally(() => setLoading(false));
   }, [activeCategory, q, sort]);
@@ -109,4 +145,4 @@ export default function Boutique() {
       </div>
     </main>
   );
-}
+            }
