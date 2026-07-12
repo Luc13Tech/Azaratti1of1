@@ -22,10 +22,29 @@ export default function Produit() {
 
   useEffect(() => {
     setLoading(true);
-    setMainImg(0); setSelectedColor(null); setSelectedSize(null); setAdded(false); setError(""); setImgErrors({});
+    setMainImg(0); 
+    setSelectedColor(null); 
+    setSelectedSize(null); 
+    setAdded(false); 
+    setError(""); 
+    setImgErrors({});
+    
     productsAPI.getById(id)
-      .then(({ data }) => { setProduct(data.product); setSelectedColor(data.product.colors?.[0]?.id || null); })
-      .catch(() => setProduct(null))
+      .then(({ data }) => { 
+        console.log("[Produit] Données reçues:", data);
+        setProduct(data.product); 
+        // ✅ CORRECTION : Vérifier que les images existent
+        if (data.product && data.product.images && data.product.images.length > 0) {
+          console.log("[Produit] Images disponibles:", data.product.images);
+        } else {
+          console.warn("[Produit] Aucune image trouvée pour ce produit");
+        }
+        setSelectedColor(data.product.colors?.[0]?.id || null); 
+      })
+      .catch((err) => {
+        console.error("[Produit] Erreur de chargement:", err);
+        setProduct(null);
+      })
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -68,6 +87,24 @@ export default function Produit() {
   const desc = tF(product.description);
   const selectedColorObj = product.colors?.find(c => c.id === selectedColor);
 
+  // ✅ CORRECTION : S'assurer que les images existent et sont valides
+  const productImages = product.images && product.images.length > 0 ? product.images : [];
+  
+  // ✅ CORRECTION : Fallback si pas d'images
+  const getImageUrl = (index) => {
+    if (productImages[index]) {
+      return productImages[index];
+    }
+    // Fallback: construire l'URL à partir de l'ID
+    const productId = product.productId || product.id || '';
+    const num = productId.split('-')[1] || productId;
+    return `/images/produits/main-${num}.jpg`;
+  };
+
+  // ✅ CORRECTION : S'assurer que mainImg est valide
+  const validMainImg = mainImg < productImages.length ? mainImg : 0;
+  const mainImageUrl = productImages.length > 0 ? productImages[validMainImg] : getImageUrl(0);
+
   return (
     <main className="page produit">
       <div className="container produit__inner">
@@ -81,26 +118,45 @@ export default function Produit() {
           {/* Gallery */}
           <div className="produit__gallery">
             <div className="produit__main-img">
-              {product.images?.[mainImg] && !imgErrors[mainImg] ? (
-                <img src={product.images[mainImg]} alt={name} onError={() => setImgErrors(p=>({...p,[mainImg]:true}))} />
+              {mainImageUrl && !imgErrors[validMainImg] ? (
+                <img 
+                  src={mainImageUrl} 
+                  alt={name} 
+                  onError={(e) => {
+                    console.error("[Produit] Erreur de chargement:", mainImageUrl);
+                    setImgErrors(p => ({...p, [validMainImg]: true}));
+                  }} 
+                />
               ) : (
                 <div className="produit__img-placeholder">
                   <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.7"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                   <p>{name}</p>
-                  <span className="eyebrow">{product.edition}</span>
+                  {product.edition && <span className="eyebrow">{product.edition}</span>}
                 </div>
               )}
               <button className={`produit__like-btn ${liked?"active":""}`} onClick={() => toggleLike(product.productId)}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill={liked?"currentColor":"none"} stroke="currentColor" strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
               </button>
             </div>
-            {product.images?.length > 1 && (
+            
+            {/* ✅ CORRECTION : Afficher les miniatures seulement si plusieurs images */}
+            {productImages.length > 1 && (
               <div className="produit__thumbs">
-                {product.images.map((img, i) => (
-                  <button key={i} className={`produit__thumb ${mainImg===i?"active":""}`} onClick={() => setMainImg(i)}>
+                {productImages.map((img, i) => (
+                  <button 
+                    key={i} 
+                    className={`produit__thumb ${validMainImg === i ? "active" : ""}`} 
+                    onClick={() => setMainImg(i)}
+                  >
                     {img && !imgErrors[i] ? (
-                      <img src={img} alt="" onError={() => setImgErrors(p=>({...p,[i]:true}))} />
-                    ) : <div className="produit__thumb-placeholder" />}
+                      <img 
+                        src={img} 
+                        alt="" 
+                        onError={() => setImgErrors(p => ({...p, [i]: true}))} 
+                      />
+                    ) : (
+                      <div className="produit__thumb-placeholder" />
+                    )}
                   </button>
                 ))}
               </div>
@@ -109,7 +165,9 @@ export default function Produit() {
 
           {/* Info */}
           <div className="produit__info">
-            <span className="eyebrow produit__edition">{product.edition}</span>
+            {product.edition && (
+              <span className="eyebrow produit__edition">{product.edition}</span>
+            )}
             <h1 className="produit__name">{name}</h1>
             <p className="produit__price">${product.priceUSD?.toLocaleString()}<span> USD</span></p>
             <div className="produit__divider" />
@@ -151,7 +209,9 @@ export default function Produit() {
 
             <div className="produit__details">
               <div className="produit__detail-row"><span>SKU</span><span>{product.sku}</span></div>
-              <div className="produit__detail-row"><span>{t("product.edition")}</span><span>{product.edition}</span></div>
+              {product.edition && (
+                <div className="produit__detail-row"><span>{t("product.edition")}</span><span>{product.edition}</span></div>
+              )}
               <div className="produit__detail-row"><span>Catégorie</span><span style={{textTransform:"capitalize"}}>{product.category}</span></div>
             </div>
 
@@ -167,4 +227,4 @@ export default function Produit() {
       </div>
     </main>
   );
-}
+          }
