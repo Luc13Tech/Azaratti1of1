@@ -18,24 +18,23 @@ export default function Boutique() {
   useEffect(() => {
     setLoading(true);
 
-    // ✅ CORRECTION : Fonction pour normaliser les produits (s'assurer que les images sont correctes)
+    // ✅ Fonction pour normaliser les produits
     const normalizeProducts = (list) => {
       return list.map(p => {
-        // ✅ S'assurer que les images existent
+        // S'assurer que les images existent
         let images = p.images || [];
         
-        // ✅ Si pas d'images, construire le chemin à partir de l'ID
+        // Si pas d'images, construire le chemin à partir de l'ID
         if (!images || images.length === 0) {
           const productId = p.productId || p.id || '';
           const num = productId.split('-')[1] || productId;
           images = [`/images/produits/main-${num}.jpg`];
         }
         
-        // ✅ Retourner le produit avec les images corrigées
+        // Retourner le produit avec les données normalisées
         return {
           ...p,
           images: images,
-          // ✅ S'assurer que productId existe
           productId: p.productId || p.id || `product-${p.id || ''}`
         };
       });
@@ -43,9 +42,13 @@ export default function Boutique() {
 
     const applyFiltersAndSort = (list) => {
       let result = [...list];
+      
+      // Filtre par catégorie
       if (activeCategory !== "all") {
         result = result.filter(p => p.category === activeCategory);
       }
+      
+      // Filtre par recherche
       if (q) {
         const qLow = q.toLowerCase();
         result = result.filter(p => {
@@ -53,26 +56,29 @@ export default function Boutique() {
           return name.toLowerCase().includes(qLow);
         });
       }
-      if (sort === "asc") result.sort((a,b) => a.priceUSD - b.priceUSD);
-      if (sort === "desc") result.sort((a,b) => b.priceUSD - a.priceUSD);
+      
+      // Tri
+      if (sort === "asc") result.sort((a, b) => a.priceUSD - b.priceUSD);
+      if (sort === "desc") result.sort((a, b) => b.priceUSD - a.priceUSD);
+      
       return result;
     };
 
-    // ✅ AJOUT : Log pour déboguer
     console.log("[Boutique] Récupération des produits...");
     
-    productsAPI.list({ category: activeCategory !== "all" ? activeCategory : undefined, q: q || undefined })
+    productsAPI.list({ 
+      category: activeCategory !== "all" ? activeCategory : undefined, 
+      q: q || undefined 
+    })
       .then(({ data }) => {
         console.log("[Boutique] Données reçues de l'API:", data);
         const apiList = data.products || [];
         
         if (apiList.length > 0) {
-          // ✅ Normaliser les données de l'API
           const normalized = normalizeProducts(apiList);
-          console.log("[Boutique] Produits normalisés:", normalized);
+          console.log(`[Boutique] ${normalized.length} produits chargés depuis l'API`);
           setProducts(applyFiltersAndSort(normalized));
         } else {
-          // Fallback données statiques
           console.log("[Boutique] Utilisation des données statiques");
           const normalized = normalizeProducts(staticProducts);
           setProducts(applyFiltersAndSort(normalized));
@@ -80,14 +86,13 @@ export default function Boutique() {
       })
       .catch((err) => {
         console.error("[Boutique] Erreur API, utilisation des données statiques:", err);
-        // ✅ Normaliser les données statiques
         const normalized = normalizeProducts(staticProducts);
         setProducts(applyFiltersAndSort(normalized));
       })
       .finally(() => setLoading(false));
   }, [activeCategory, q, sort]);
 
-  const cats = ["all","vestes","smoking","tweed"];
+  const cats = ["all", "vestes", "smoking", "tweed"];
 
   return (
     <main className="page boutique">
@@ -102,9 +107,11 @@ export default function Boutique() {
         <div className="boutique__toolbar">
           <div className="boutique__cats">
             {cats.map(c => (
-              <button key={c}
-                className={`boutique__cat-btn ${activeCategory===c?"boutique__cat-btn--active":""}`}
-                onClick={() => { setActiveCategory(c); if(q) setSearchParams({}); }}>
+              <button
+                key={c}
+                className={`boutique__cat-btn ${activeCategory === c ? "boutique__cat-btn--active" : ""}`}
+                onClick={() => { setActiveCategory(c); if (q) setSearchParams({}); }}
+              >
                 {t(`boutique.${c}`)}
               </button>
             ))}
@@ -125,7 +132,7 @@ export default function Boutique() {
 
         {loading ? (
           <div className="boutique__grid">
-            {Array.from({length:8}).map((_,i)=>(
+            {Array.from({ length: 8 }).map((_, i) => (
               <div key={i}>
                 <div className="skeleton boutique__skeleton-img" />
                 <div className="skeleton boutique__skeleton-title" />
@@ -134,7 +141,9 @@ export default function Boutique() {
             ))}
           </div>
         ) : products.length === 0 ? (
-          <div className="boutique__empty"><p>{t("boutique.noResults")}</p></div>
+          <div className="boutique__empty">
+            <p>{t("boutique.noResults")}</p>
+          </div>
         ) : (
           <div className="boutique__grid">
             {products.map(p => (
@@ -145,4 +154,4 @@ export default function Boutique() {
       </div>
     </main>
   );
-            }
+      }
