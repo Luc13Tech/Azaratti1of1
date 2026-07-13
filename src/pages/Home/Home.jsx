@@ -7,8 +7,37 @@ import HeroSlider from "../../components/HeroSlider/HeroSlider.jsx";
 import ProductCard from "../../components/ProductCard/ProductCard.jsx";
 import "./Home.css";
 
+// ✅ Fonction pour normaliser les produits statiques
 function normalizeStatic(p) {
-  return { ...p, productId: p.id };
+  // S'assurer que les images existent
+  let images = p.images || [];
+  if (!images || images.length === 0) {
+    const productId = p.id || '';
+    const num = productId.split('-')[1] || productId;
+    images = [`/images/produits/main-${num}.jpg`];
+  }
+  
+  return { 
+    ...p, 
+    productId: p.id,
+    images: images
+  };
+}
+
+// ✅ Fonction pour normaliser les produits de l'API
+function normalizeApiProduct(p) {
+  let images = p.images || [];
+  if (!images || images.length === 0) {
+    const productId = p.productId || p.id || '';
+    const num = productId.split('-')[1] || productId;
+    images = [`/images/produits/main-${num}.jpg`];
+  }
+  
+  return {
+    ...p,
+    images: images,
+    productId: p.productId || p.id || `product-${p.id || ''}`
+  };
 }
 
 export default function Home() {
@@ -17,13 +46,29 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("[Home] Récupération des produits pour la page d'accueil...");
+    
     productsAPI.list()
       .then(({ data }) => {
         const list = data.products || [];
-        setProducts(list.length > 0 ? list.slice(0, 4) : staticProducts.slice(0, 4).map(normalizeStatic));
+        console.log(`[Home] ${list.length} produits reçus de l'API`);
+        
+        if (list.length > 0) {
+          // ✅ Normaliser les données de l'API et prendre les 4 premiers
+          const normalized = list.map(normalizeApiProduct);
+          setProducts(normalized.slice(0, 4));
+          console.log(`[Home] ${products.length} produits affichés sur la page d'accueil`);
+        } else {
+          // ✅ Fallback données statiques
+          console.log("[Home] Utilisation des données statiques");
+          const normalized = staticProducts.slice(0, 4).map(normalizeStatic);
+          setProducts(normalized);
+        }
       })
-      .catch(() => {
-        setProducts(staticProducts.slice(0, 4).map(normalizeStatic));
+      .catch((err) => {
+        console.error("[Home] Erreur API, utilisation des données statiques:", err);
+        const normalized = staticProducts.slice(0, 4).map(normalizeStatic);
+        setProducts(normalized);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -51,7 +96,7 @@ export default function Home() {
             </div>
           ) : (
             <div className="home__grid">
-              {products.map(p => <ProductCard key={p.productId||p.id} product={p} />)}
+              {products.map(p => <ProductCard key={p.productId || p.id} product={p} />)}
             </div>
           )}
           <div className="home__collection-cta">
@@ -107,4 +152,4 @@ export default function Home() {
       </section>
     </main>
   );
-}
+    }
