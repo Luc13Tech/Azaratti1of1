@@ -37,14 +37,13 @@ function make(n, opts) {
     sizes,
     category: opts.category || "vestes",
     priceUSD: 450,
-    priceEUR: 450,
     name:     opts.name,
     description: opts.description,
   };
 }
 
 export const products = [
-  // Articles 1 à 15 (existants - corrigés)
+  // Articles 1 à 15
   make(1, {
     category: "vestes",
     name: { fr:"Veste Aza Noire Sculptée", en:"Aza Sculpted Black Jacket", es:"Chaqueta Aza Negra Esculpida", de:"Aza Skulptierte Schwarze Jacke" },
@@ -121,7 +120,7 @@ export const products = [
     description: { fr:"La pièce ultime — fils dorés tissés à la main, série unique close à 1 exemplaire. L'apogée du savoir-faire.", en:"The ultimate piece — hand-woven gold threads, unique series of 1. The pinnacle of craftsmanship.", es:"La pieza definitiva — hilos dorados tejidos a mano, serie única de 1 ejemplar. La cumbre del savoir-faire.", de:"Das ultimative Stück — handgewebte Goldfäden, einzigartige Serie von 1. Der Gipfel der Handwerkskunst." },
   }),
   
-  // Articles 16 à 30 (NOUVEAUX)
+  // Articles 16 à 30
   make(16, {
     category: "vestes",
     name: { fr:"Veste Bleu Royal", en:"Royal Blue Jacket", es:"Chaqueta Azul Real", de:"Königsblaue Jacke" },
@@ -198,7 +197,7 @@ export const products = [
     description: { fr:"Bleu cobalt intense, revers satin noir, une pièce qui attire tous les regards.", en:"Intense cobalt blue, black satin lapel, a piece that draws all eyes.", es:"Azul cobalto intenso, solapa de satén negro, una pieza que atrae todas las miradas.", de:"Intensives Kobaltblau, schwarzes Satinrevers, ein Stück, das alle Blicke auf sich zieht." },
   }),
   
-  // Articles 31 à 45 (NOUVEAUX)
+  // Articles 31 à 45
   make(31, {
     category: "vestes",
     name: { fr:"Veste Azaratti Sauge", en:"Azaratti Sage Jacket", es:"Chaqueta Azaratti Salvia", de:"Azaratti Salbeijacke" },
@@ -275,7 +274,7 @@ export const products = [
     description: { fr:"Violet orchidée, doublure en soie imprimée, coupe élancée. Une pièce florale et élégante.", en:"Orchid purple, printed silk lining, slim cut. A floral and elegant piece.", es:"Púrpura orquídea, forro de seda estampado, corte estilizado. Una pieza floral y elegante.", de:"Orchideenviolett, bedrucktes Seidenfutter, schmaler Schnitt. Ein florales und elegantes Stück." },
   }),
   
-  // Articles 46 à 60 (NOUVEAUX)
+  // Articles 46 à 60
   make(46, {
     category: "smoking",
     name: { fr:"Smoking Améthyste", en:"Amethyst Tuxedo", es:"Esmoquin Amatista", de:"Amethyst-Smoking" },
@@ -352,7 +351,7 @@ export const products = [
     description: { fr:"Brun châtaigne, texture chaleureuse, boutons bois. Une pièce automnale et authentique.", en:"Chestnut brown, warm texture, wooden buttons. An autumnal and authentic piece.", es:"Marrón castaña, textura cálida, botones de madera. Una pieza otoñal y auténtica.", de:"Kastanienbraun, warme Textur, Holzknöpfe. Ein herbstliches und authentisches Stück." },
   }),
   
-  // Articles 61 à 73 (NOUVEAUX)
+  // Articles 61 à 73
   make(61, {
     category: "vestes",
     name: { fr:"Veste Azaratti Flamme", en:"Azaratti Flame Jacket", es:"Chaqueta Azaratti Llama", de:"Azaratti Flammenjacke" },
@@ -422,4 +421,4 @@ export const products = [
 
 export function getProductById(id) {
   return products.find(p => p.id === id || p.productId === id);
-}
+    }
