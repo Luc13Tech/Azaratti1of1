@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useLang } from "../../context/LangContext.jsx";
 import "./HeroSlider.css";
 
-// Images du slider — dossier SÉPARÉ /public/images/slider/
+// ✅ Images du slider — dossier SÉPARÉ /public/images/slider/
 // Ces images sont UNIQUEMENT pour le hero, jamais dans la boutique
 // Place tes 7 photos dans : public/images/slider/slide-1.jpg ... slide-7.jpg
 const SLIDES = [
@@ -20,6 +20,7 @@ export default function HeroSlider() {
   const { t } = useLang();
   const [current, setCurrent] = useState(0);
   const [loaded, setLoaded] = useState({});
+  const [imageErrors, setImageErrors] = useState({});
 
   const next = useCallback(() => setCurrent(c => (c + 1) % SLIDES.length), []);
   const prev = useCallback(() => setCurrent(c => (c - 1 + SLIDES.length) % SLIDES.length), []);
@@ -29,23 +30,44 @@ export default function HeroSlider() {
     return () => clearInterval(timer);
   }, [next]);
 
+  // ✅ Log pour vérifier les chemins des images
+  useEffect(() => {
+    console.log("[HeroSlider] Images du slider:", SLIDES.map(s => s.img));
+  }, []);
+
   return (
     <section className="hero-slider">
       {SLIDES.map((slide, idx) => (
         <div key={slide.id}
           className={`hero-slider__slide ${idx === current ? "hero-slider__slide--active" : ""}`}>
-          {loaded[idx] !== "error" ? (
+          {!imageErrors[idx] ? (
             <img
               src={slide.img}
               alt=""
               className="hero-slider__img"
-              onLoad={() => setLoaded(p => ({...p, [idx]: true}))}
-              onError={() => setLoaded(p => ({...p, [idx]: "error"}))}
+              onLoad={() => {
+                console.log(`[HeroSlider] Image ${idx + 1} chargée:`, slide.img);
+                setLoaded(p => ({...p, [idx]: true}));
+              }}
+              onError={() => {
+                console.error(`[HeroSlider] Erreur de chargement image ${idx + 1}:`, slide.img);
+                setImageErrors(p => ({...p, [idx]: true}));
+                setLoaded(p => ({...p, [idx]: "error"}));
+              }}
               style={{ opacity: loaded[idx] === true ? 1 : 0 }}
             />
-          ) : null}
+          ) : (
+            // ✅ Afficher un placeholder en cas d'erreur
+            <div className="hero-slider__brand-bg">
+              <div className="hero-slider__brand-pattern" />
+              <div className="hero-slider__placeholder-text">
+                <span>AzaRatti</span>
+                <span className="hero-slider__placeholder-sub">1 of 1</span>
+              </div>
+            </div>
+          )}
           {/* Fond élégant si pas encore d'image */}
-          {loaded[idx] !== true && (
+          {loaded[idx] !== true && !imageErrors[idx] && (
             <div className="hero-slider__brand-bg">
               <div className="hero-slider__brand-pattern" />
             </div>
@@ -97,4 +119,4 @@ export default function HeroSlider() {
       </div>
     </section>
   );
-}
+                }
