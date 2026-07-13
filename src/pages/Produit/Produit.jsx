@@ -22,24 +22,18 @@ export default function Produit() {
 
   useEffect(() => {
     setLoading(true);
-    setMainImg(0); 
-    setSelectedColor(null); 
-    setSelectedSize(null); 
-    setAdded(false); 
-    setError(""); 
+    setMainImg(0);
+    setSelectedColor(null);
+    setSelectedSize(null);
+    setAdded(false);
+    setError("");
     setImgErrors({});
-    
+
     productsAPI.getById(id)
-      .then(({ data }) => { 
+      .then(({ data }) => {
         console.log("[Produit] Données reçues:", data);
-        setProduct(data.product); 
-        // ✅ CORRECTION : Vérifier que les images existent
-        if (data.product && data.product.images && data.product.images.length > 0) {
-          console.log("[Produit] Images disponibles:", data.product.images);
-        } else {
-          console.warn("[Produit] Aucune image trouvée pour ce produit");
-        }
-        setSelectedColor(data.product.colors?.[0]?.id || null); 
+        setProduct(data.product);
+        setSelectedColor(data.product.colors?.[0]?.id || null);
       })
       .catch((err) => {
         console.error("[Produit] Erreur de chargement:", err);
@@ -62,10 +56,10 @@ export default function Produit() {
         <div className="produit-skeleton">
           <div className="skeleton produit-skeleton__img" />
           <div className="produit-skeleton__info">
-            <div className="skeleton" style={{height:14,width:"30%",marginBottom:20}} />
-            <div className="skeleton" style={{height:40,width:"80%",marginBottom:12}} />
-            <div className="skeleton" style={{height:30,width:"25%",marginBottom:32}} />
-            <div className="skeleton" style={{height:52,width:"100%",marginTop:32}} />
+            <div className="skeleton" style={{ height: 14, width: "30%", marginBottom: 20 }} />
+            <div className="skeleton" style={{ height: 40, width: "80%", marginBottom: 12 }} />
+            <div className="skeleton" style={{ height: 30, width: "25%", marginBottom: 32 }} />
+            <div className="skeleton" style={{ height: 52, width: "100%", marginTop: 32 }} />
           </div>
         </div>
       </div>
@@ -77,7 +71,7 @@ export default function Produit() {
       <div className="container">
         <p className="eyebrow">404</p>
         <h1>{t("product.unavailable")}</h1>
-        <Link to="/boutique" className="btn btn-dark" style={{marginTop:24}}>{t("product.back")}</Link>
+        <Link to="/boutique" className="btn btn-dark" style={{ marginTop: 24 }}>{t("product.back")}</Link>
       </div>
     </main>
   );
@@ -87,21 +81,21 @@ export default function Produit() {
   const desc = tF(product.description);
   const selectedColorObj = product.colors?.find(c => c.id === selectedColor);
 
-  // ✅ CORRECTION : S'assurer que les images existent et sont valides
+  // ✅ Gestion des images
   const productImages = product.images && product.images.length > 0 ? product.images : [];
   
-  // ✅ CORRECTION : Fallback si pas d'images
+  // ✅ Fallback si pas d'images
   const getImageUrl = (index) => {
     if (productImages[index]) {
       return productImages[index];
     }
-    // Fallback: construire l'URL à partir de l'ID
+    // Construire l'URL à partir de l'ID
     const productId = product.productId || product.id || '';
     const num = productId.split('-')[1] || productId;
     return `/images/produits/main-${num}.jpg`;
   };
 
-  // ✅ CORRECTION : S'assurer que mainImg est valide
+  // ✅ S'assurer que mainImg est valide
   const validMainImg = mainImg < productImages.length ? mainImg : 0;
   const mainImageUrl = productImages.length > 0 ? productImages[validMainImg] : getImageUrl(0);
 
@@ -119,40 +113,47 @@ export default function Produit() {
           <div className="produit__gallery">
             <div className="produit__main-img">
               {mainImageUrl && !imgErrors[validMainImg] ? (
-                <img 
-                  src={mainImageUrl} 
-                  alt={name} 
-                  onError={(e) => {
+                <img
+                  src={mainImageUrl}
+                  alt={name}
+                  onError={() => {
                     console.error("[Produit] Erreur de chargement:", mainImageUrl);
-                    setImgErrors(p => ({...p, [validMainImg]: true}));
-                  }} 
+                    setImgErrors(p => ({ ...p, [validMainImg]: true }));
+                  }}
                 />
               ) : (
                 <div className="produit__img-placeholder">
-                  <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.7"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.7">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                  </svg>
                   <p>{name}</p>
-                  {product.edition && <span className="eyebrow">{product.edition}</span>}
                 </div>
               )}
-              <button className={`produit__like-btn ${liked?"active":""}`} onClick={() => toggleLike(product.productId)}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill={liked?"currentColor":"none"} stroke="currentColor" strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <button
+                className={`produit__like-btn ${liked ? "active" : ""}`}
+                onClick={() => toggleLike(product.productId)}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill={liked ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.5">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
               </button>
             </div>
-            
-            {/* ✅ CORRECTION : Afficher les miniatures seulement si plusieurs images */}
+
+            {/* ✅ Miniatures seulement si plusieurs images */}
             {productImages.length > 1 && (
               <div className="produit__thumbs">
                 {productImages.map((img, i) => (
-                  <button 
-                    key={i} 
-                    className={`produit__thumb ${validMainImg === i ? "active" : ""}`} 
+                  <button
+                    key={i}
+                    className={`produit__thumb ${validMainImg === i ? "active" : ""}`}
                     onClick={() => setMainImg(i)}
                   >
                     {img && !imgErrors[i] ? (
-                      <img 
-                        src={img} 
-                        alt="" 
-                        onError={() => setImgErrors(p => ({...p, [i]: true}))} 
+                      <img
+                        src={img}
+                        alt=""
+                        onError={() => setImgErrors(p => ({ ...p, [i]: true }))}
                       />
                     ) : (
                       <div className="produit__thumb-placeholder" />
@@ -165,22 +166,35 @@ export default function Produit() {
 
           {/* Info */}
           <div className="produit__info">
-            {product.edition && (
-              <span className="eyebrow produit__edition">{product.edition}</span>
-            )}
+            {/* ✅ Suppression de l'affichage de l'édition */}
             <h1 className="produit__name">{name}</h1>
             <p className="produit__price">${product.priceUSD?.toLocaleString()}<span> USD</span></p>
             <div className="produit__divider" />
 
             {product.colors?.length > 0 && (
               <div className="produit__option">
-                <p className="produit__option-label">{t("product.color")}{selectedColorObj && <strong> — {tF(selectedColorObj.label)}</strong>}</p>
+                <p className="produit__option-label">
+                  {t("product.color")}
+                  {selectedColorObj && <strong> — {tF(selectedColorObj.label)}</strong>}
+                </p>
                 <div className="produit__colors">
                   {product.colors.map(c => (
-                    <button key={c.id} className={`produit__color ${selectedColor===c.id?"active":""}`} style={{background:c.hex}} title={tF(c.label)} onClick={() => setSelectedColor(c.id)} />
+                    <button
+                      key={c.id}
+                      className={`produit__color ${selectedColor === c.id ? "active" : ""}`}
+                      style={{ background: c.hex }}
+                      title={tF(c.label)}
+                      onClick={() => setSelectedColor(c.id)}
+                    />
                   ))}
-                  <button className="produit__color-custom" title="Sur mesure" onClick={() => window.location.href=`/sur-mesure?ref=${product.productId}`}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
+                  <button
+                    className="produit__color-custom"
+                    title="Sur mesure"
+                    onClick={() => window.location.href = `/sur-mesure?ref=${product.productId}`}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M12 5v14M5 12h14" />
+                    </svg>
                   </button>
                 </div>
               </div>
@@ -190,7 +204,11 @@ export default function Produit() {
               <p className="produit__option-label">{t("product.size")}</p>
               <div className="produit__sizes">
                 {product.sizes?.map(s => (
-                  <button key={s} className={`produit__size-btn ${selectedSize===s?"active":""}`} onClick={() => {setSelectedSize(s);setError("");}}>
+                  <button
+                    key={s}
+                    className={`produit__size-btn ${selectedSize === s ? "active" : ""}`}
+                    onClick={() => { setSelectedSize(s); setError(""); }}
+                  >
                     {s}
                   </button>
                 ))}
@@ -198,7 +216,10 @@ export default function Produit() {
               {error && <p className="produit__error">{error}</p>}
             </div>
 
-            <button className={`btn produit__add-btn ${added?"produit__add-btn--done":"btn-dark"}`} onClick={handleAddToCart}>
+            <button
+              className={`btn produit__add-btn ${added ? "produit__add-btn--done" : "btn-dark"}`}
+              onClick={handleAddToCart}
+            >
               {added ? t("product.addedToCart") : t("product.addToCart")}
             </button>
 
@@ -208,11 +229,15 @@ export default function Produit() {
             </div>
 
             <div className="produit__details">
-              <div className="produit__detail-row"><span>SKU</span><span>{product.sku}</span></div>
-              {product.edition && (
-                <div className="produit__detail-row"><span>{t("product.edition")}</span><span>{product.edition}</span></div>
-              )}
-              <div className="produit__detail-row"><span>Catégorie</span><span style={{textTransform:"capitalize"}}>{product.category}</span></div>
+              <div className="produit__detail-row">
+                <span>SKU</span>
+                <span>{product.sku}</span>
+              </div>
+              {/* ✅ Suppression de la ligne d'édition */}
+              <div className="produit__detail-row">
+                <span>Catégorie</span>
+                <span style={{ textTransform: "capitalize" }}>{product.category}</span>
+              </div>
             </div>
 
             <div className="produit__custom-cta">
@@ -220,11 +245,13 @@ export default function Produit() {
                 <p className="produit__custom-title">{t("product.customTitle")}</p>
                 <p className="produit__custom-text">{t("product.customText")}</p>
               </div>
-              <Link to={`/sur-mesure?ref=${product.productId}`} className="btn btn-outline btn-sm">{t("product.customCta")}</Link>
+              <Link to={`/sur-mesure?ref=${product.productId}`} className="btn btn-outline btn-sm">
+                {t("product.customCta")}
+              </Link>
             </div>
           </div>
         </div>
       </div>
     </main>
   );
-          }
+    }
