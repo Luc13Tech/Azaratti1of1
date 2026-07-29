@@ -17,8 +17,8 @@ export default function Maison() {
       <section className="maison__hero">
         <div className="maison__hero-bg" />
         <div className="container maison__hero-content">
-          <p className="eyebrow" style={{color:"var(--gold-light)"}}>{t("maison.title")}</p>
-          <h1 className="display-1" style={{color:"#fff"}}>{t("maison.sub")}</h1>
+          <p className="eyebrow">{t("maison.title")}</p>
+          <h1>{t("maison.sub")}</h1>
         </div>
       </section>
 
@@ -29,11 +29,11 @@ export default function Maison() {
           { title: t("maison.chapter2Title"), text: t("maison.chapter2Text"), num: "02" },
           { title: t("maison.chapter3Title"), text: t("maison.chapter3Text"), num: "03" },
         ].map((ch, i) => (
-          <div key={i} className={`maison__chapter ${i%2===1?"maison__chapter--alt":""}`}>
+          <div key={i} className="maison__chapter">
             <div className="maison__chapter-num">{ch.num}</div>
             <div className="maison__chapter-body">
               <h2 className="maison__chapter-title">{ch.title}</h2>
-              <div className="gold-line" style={{marginLeft:0,margin:"20px 0"}} />
+              <div className="gold-line" />
               <p className="maison__chapter-text">{ch.text}</p>
             </div>
           </div>
@@ -60,7 +60,7 @@ export default function Maison() {
       <section className="container maison__values">
         <div className="maison__values-head">
           <p className="eyebrow">{t("maison.valuesTitle")}</p>
-          <div className="gold-line" style={{margin:"16px 0 56px"}} />
+          <div className="gold-line" />
         </div>
         <div className="maison__values-grid">
           {values.map(v => (
@@ -76,10 +76,10 @@ export default function Maison() {
       {/* CTA */}
       <section className="maison__cta-section">
         <div className="container maison__cta-inner">
-          <h2 className="section-title" style={{color:"#fff"}}>Prêt à posséder votre pièce unique ?</h2>
+          <h2 className="section-title">Prêt à posséder votre pièce unique ?</h2>
           <div style={{display:"flex",gap:16,justifyContent:"center",flexWrap:"wrap",marginTop:32}}>
-            <Link to="/boutique" className="btn btn-white">{t("home.ctaDiscover")}</Link>
-            <Link to="/sur-mesure" className="btn" style={{background:"var(--gold)",borderColor:"var(--gold)",color:"#fff"}}>{t("home.ctaBespoke")}</Link>
+            <Link to="/boutique" className="btn-white">{t("home.ctaDiscover")}</Link>
+            <Link to="/sur-mesure" className="btn-gold">{t("home.ctaBespoke")}</Link>
           </div>
         </div>
       </section>
