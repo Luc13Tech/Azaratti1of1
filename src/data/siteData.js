@@ -6,7 +6,7 @@ export const company = {
   name: "AzaRatti 1 of 1",
   tagline: "Limited Edition, One-Off Piece",
   whatsappNumber: "221779398484",
-  email: "Contact@azaratti.com",
+  email: "Contact@azaratti1of1.com",
   logo: "/images/logo/azaratti-logo.jpg",
 };
 
