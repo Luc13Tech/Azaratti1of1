@@ -43,7 +43,7 @@ function make(n, opts) {
 }
 
 export const products = [
-  // Articles 1 à 15
+  // Articles 1 à 75
   make(1, {
     category: "vestes",
     name: { fr:"Veste Aza Noire Sculptée", en:"Aza Sculpted Black Jacket", es:"Chaqueta Aza Negra Esculpida", de:"Aza Skulptierte Schwarze Jacke" },
@@ -416,6 +416,11 @@ export const products = [
     category: "vestes",
     name: { fr:"Veste Azaratti Infini", en:"Azaratti Infinity Jacket", es:"Chaqueta Azaratti Infinito", de:"Azaratti Unendlichkeitsjacke" },
     description: { fr:"Noir infini, détails brillants subtils, coupe intemporelle. La pièce ultime de la collection.", en:"Infinite black, subtle shiny details, timeless cut. The ultimate piece of the collection.", es:"Negro infinito, detalles brillantes sutiles, corte atemporal. La pieza definitiva de la colección.", de:"Unendliches Schwarz, dezente glänzende Details, zeitloser Schnitt. Das ultimative Stück der Kollektion." },
+  }),
+  make(75, {
+    category: "tweed",
+    name: { fr:"Veste Tweed Épice", en:"Spice Tweed Jacket", es:"Chaqueta Tweed Especia", de:"Gewürz-Tweedjacke" },
+    description: { fr:"Mélange de rouges et d'ocres, texture riche. Une pièce aux accents chauds.", en:"Blend of reds and ochres, rich texture. A piece with warm accents.", es:"Mezcla de rojos y ocres, textura rica. Una pieza con acentos cálidos.", de:"Mischung aus Rottönen und Ocker, reiche Textur. Ein Stück mit warmen Akzenten." },
   }),
 ];
 
