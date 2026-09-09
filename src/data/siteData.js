@@ -1,6 +1,6 @@
 // siteData.js — Données statiques des produits
 // Utilisé comme fallback quand l'API backend est indisponible
-// Images : /public/images/produits/main-1.jpg à main-73.jpg
+// Images : /public/images/produits/main-1.jpg à main-75.jpg
 
 export const company = {
   name: "AzaRatti 1 of 1",
